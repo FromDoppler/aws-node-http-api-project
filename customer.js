@@ -1,4 +1,3 @@
-'use strict'
 const AWS = require('aws-sdk');
 
 module.exports.createCustomer = async (event) => {

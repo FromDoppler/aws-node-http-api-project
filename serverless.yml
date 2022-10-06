@@ -21,6 +21,9 @@ provider:
   environment:
     DYNAMODB_CUSTOMER_TABLE: ${self:service}-customerTable-${sls:stage}
 
+plugins:
+  - serverless-bundle
+
 functions:
   createCustomer:
     handler: customer.createCustomer
