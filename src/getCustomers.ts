@@ -1,14 +1,12 @@
-import { DynamoDB } from "aws-sdk";
 import { APIGatewayProxyHandler } from "aws-lambda";
+import { createCustomerService } from './compositionRoot';
 
 export const getCustomers: APIGatewayProxyHandler = async (event, context) => {
-    const scanParams = {
-        TableName: process.env.DYNAMODB_CUSTOMER_TABLE
-    };
-    const dynamoDb = new DynamoDB.DocumentClient();
-    const result = await dynamoDb.scan(scanParams).promise();
+    const customerService = createCustomerService();
 
-    if (result.Count === 0) {
+    const result = await customerService.getAll();
+
+    if (result.length === 0) {
         return {
             statusCode: 404,
             body: JSON.stringify({
@@ -22,11 +20,8 @@ export const getCustomers: APIGatewayProxyHandler = async (event, context) => {
     return {
         statusCode: 200,
         body: JSON.stringify({
-            total: result.Count,
-            items: result.Items.map(customer => ({
-                name: customer.primary_key,
-                email: customer.email
-            }))
+            total: result.length,
+            items: result
         })
     };
 };

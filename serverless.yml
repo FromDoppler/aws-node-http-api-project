@@ -29,13 +29,13 @@ plugins:
 
 functions:
   createCustomer:
-    handler: createCustomer.createCustomer
+    handler: src/createCustomer.createCustomer
     events:
       - httpApi:
           path: /
           method: post
   getCustomers:
-    handler: getCustomers.getCustomers
+    handler: src/getCustomers.getCustomers
     events:
       - httpApi:
           path: /
