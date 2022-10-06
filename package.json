@@ -1,0 +1,10 @@
+{
+  "name": "aws-node-http-api-project",
+  "version": "1.0.0",
+  "main": "handler.js",
+  "author": "Andrés Moschini",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.1230.0"
+  }
+}
