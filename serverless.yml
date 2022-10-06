@@ -3,6 +3,9 @@ app: aws-node-http-api-project
 service: aws-node-http-api-project
 frameworkVersion: '3'
 
+package:
+  individually: true
+
 provider:
   name: aws
   runtime: nodejs16.x
@@ -26,13 +29,13 @@ plugins:
 
 functions:
   createCustomer:
-    handler: customer.createCustomer
+    handler: createCustomer.createCustomer
     events:
       - httpApi:
           path: /
           method: post
   getCustomers:
-    handler: customer.getCustomers
+    handler: getCustomers.getCustomers
     events:
       - httpApi:
           path: /
