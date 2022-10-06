@@ -5,12 +5,12 @@
   "author": "Andrés Moschini",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.1230.0"
+    "aws-sdk": "2.1230.0"
   },
   "scripts": {
     "test": "serverless-bundle test"
   },
   "devDependencies": {
-    "serverless-bundle": "^5.5.0"
+    "serverless-bundle": "5.5.0"
   }
 }
