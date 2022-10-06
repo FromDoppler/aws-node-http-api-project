@@ -1,8 +1,9 @@
-const AWS = require('aws-sdk');
+import { DynamoDB } from "aws-sdk";
+import { APIGatewayProxyHandler } from "aws-lambda";
 
-module.exports.createCustomer = async (event) => {
+export const createCustomer: APIGatewayProxyHandler = async (event, context) => {
     const body = JSON.parse(Buffer.from(event.body, 'base64').toString());
-    const dynamoDb = new AWS.DynamoDB.DocumentClient();
+    const dynamoDb = new DynamoDB.DocumentClient();
     const putParams = {
         TableName: process.env.DYNAMODB_CUSTOMER_TABLE,
         Item: {
@@ -13,20 +14,30 @@ module.exports.createCustomer = async (event) => {
     await dynamoDb.put(putParams).promise();
 
     return {
-        statusCode: 201
+        statusCode: 201,
+        body: JSON.stringify({
+            message: "Go Serverless v2.0! Your function executed successfully!",
+            context,
+            event,
+          })
     };
 };
 
-module.exports.getCustomers = async (event) => {
+export const getCustomers: APIGatewayProxyHandler = async (event, context) => {
     const scanParams = {
         TableName: process.env.DYNAMODB_CUSTOMER_TABLE
     };
-    const dynamoDb = new AWS.DynamoDB.DocumentClient();
+    const dynamoDb = new DynamoDB.DocumentClient();
     const result = await dynamoDb.scan(scanParams).promise();
 
     if (result.Count === 0) {
         return {
-            statusCode: 404
+            statusCode: 404,
+            body: JSON.stringify({
+                message: "Go Serverless v2.0! Your function executed successfully!",
+                context,
+                event,
+              })
         };
     }
 
