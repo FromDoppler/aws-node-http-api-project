@@ -1,7 +1,7 @@
 org: andresmoschini
 app: aws-node-http-api-project
 service: aws-node-http-api-project
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 package:
   individually: true
