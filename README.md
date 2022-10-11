@@ -24,7 +24,7 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 - [ ] Token JWT validation
   - JWT Validation runs in the API Gateway or inside the lambdas?
   - JWT payload should be available inside the lambdas
-- [ ] Add all CI validation steps that we run in other projects
+- [x] Add all CI validation steps that we run in other projects
 - [ ] Enable test watching
 
 # Serverless Framework Node HTTP API on AWS
