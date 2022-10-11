@@ -10,6 +10,23 @@ authorName: 'Serverless, inc.'
 authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 -->
 
+# TO DO
+
+- [ ] Upload to a public repository
+- [ ] Finish Serverless configuration
+  - [ ] Configure API Gateway? Could it be replaced by Cloudflare?
+  - [ ] Take a look to Juane's examples
+  - [ ] Take a look to [Serverless TypeScript Starter](https://github.com/AnomalyInnovations/serverless-typescript-starter)
+- [ ] CI/CD in our Jenkins deploying to AWS
+  - Docker image with Serverless https://hub.docker.com/r/20minutes/node-16-yarn-serverless-3
+  - Docker image with Serverless https://hub.docker.com/r/amaysim/serverless
+- [ ] Expose API in a friendly domain
+- [ ] Token JWT validation
+  - JWT Validation runs in the API Gateway or inside the lambdas?
+  - JWT payload should be available inside the lambdas
+- [ ] Add all CI validation steps that we run in other projects
+- [ ] Enable test watching
+
 # Serverless Framework Node HTTP API on AWS
 
 This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.
