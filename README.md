@@ -13,19 +13,22 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 # TO DO
 
 - [x] Upload to a public repository
-- [ ] Finish Serverless configuration
+
+- [ ] [DE-829](https://makingsense.atlassian.net/browse/DE-829) Finish Serverless configuration
   - [ ] Configure API Gateway? Could it be replaced by Cloudflare?
   - [ ] Take a look to Juane's examples
   - [ ] Take a look to [Serverless TypeScript Starter](https://github.com/AnomalyInnovations/serverless-typescript-starter)
-- [ ] CI/CD in our Jenkins deploying to AWS
+- [ ] [DE-830](https://makingsense.atlassian.net/browse/DE-830) CD in our Jenkins deploying to AWS
   - Docker image with Serverless https://hub.docker.com/r/20minutes/node-16-yarn-serverless-3
   - Docker image with Serverless https://hub.docker.com/r/amaysim/serverless
-- [ ] Expose API in a friendly domain
-- [ ] Token JWT validation
+- [ ] [DE-831](https://makingsense.atlassian.net/browse/DE-831) Expose API in a friendly domain
+- [ ] [DE-832](https://makingsense.atlassian.net/browse/DE-832) Token JWT validation
   - JWT Validation runs in the API Gateway or inside the lambdas?
   - JWT payload should be available inside the lambdas
 - [x] Add all CI validation steps that we run in other projects
-- [ ] Enable test watching
+- [ ] Nice to have
+  - [ ] [DE-833](https://makingsense.atlassian.net/browse/DE-833) Enable test watching
+  - [ ] [DE-834](https://makingsense.atlassian.net/browse/DE-834) Return service version (in the headers? in a specific endpoint?)
 
 # Serverless Framework Node HTTP API on AWS
 
