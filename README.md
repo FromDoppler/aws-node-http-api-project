@@ -12,7 +12,7 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 
 # TO DO
 
-- [ ] Upload to a public repository
+- [x] Upload to a public repository
 - [ ] Finish Serverless configuration
   - [ ] Configure API Gateway? Could it be replaced by Cloudflare?
   - [ ] Take a look to Juane's examples
