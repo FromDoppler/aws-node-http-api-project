@@ -56,3 +56,9 @@ resources:
           - AttributeName: primary_key
             KeyType: HASH
         TableName: ${self:service}-customerTable-${sls:stage}
+
+custom:
+  bundle:
+    packager: "yarn"
+    disableForkTsChecker: false
+    linting: true
