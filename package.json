@@ -23,6 +23,7 @@
     "@types/jest": "29.1.2",
     "eclint": "2.8.1",
     "prettier": "2.7.1",
-    "serverless-bundle": "5.5.0"
+    "serverless-bundle": "5.5.0",
+    "serverless-dotenv-plugin": "4.0.2"
   }
 }
