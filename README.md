@@ -29,6 +29,7 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 - [ ] Nice to have
   - [ ] [DE-833](https://makingsense.atlassian.net/browse/DE-833) Enable test watching
   - [ ] [DE-834](https://makingsense.atlassian.net/browse/DE-834) Return service version (in the headers? in a specific endpoint?)
+  - [ ] [DE-835](https://makingsense.atlassian.net/browse/DE-835) Linting errors should break the build
 
 # Serverless Framework Node HTTP API on AWS
 
