@@ -28,6 +28,7 @@ provider:
 
 plugins:
   - serverless-bundle
+  - serverless-dotenv-plugin
 
 functions:
   createCustomer:
