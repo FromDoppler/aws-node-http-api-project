@@ -14,6 +14,28 @@ provider:
     blockPublicAccess: true
     name: ${self:service}-${sls:stage}-bucket
 
+  httpApi:
+    shouldStartNameWithService: true
+    metrics: true
+    cors:
+      allowedOrigins:
+        - https://app.fromdoppler.com
+        - https://app2.fromdoppler.com
+        - https://appint.fromdoppler.net
+        - https://appqa.fromdoppler.net
+        - https://webappint.fromdoppler.net
+        - https://webappqa.fromdoppler.net
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+      allowedMethods:
+        - GET
+        - POST
+      allowCredentials: true
+
+  logs:
+    httpApi: true
+
   iam:
     role:
       statements:
