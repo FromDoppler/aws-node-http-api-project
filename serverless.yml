@@ -1,6 +1,4 @@
-org: andresmoschini
-app: aws-node-http-api-project
-service: aws-node-http-api-project
+service: lambdas-poc
 frameworkVersion: "3"
 
 package:
@@ -8,8 +6,14 @@ package:
 
 provider:
   name: aws
+  region: "us-east-1"
   runtime: nodejs16.x
   architecture: arm64
+  deploymentBucket:
+    serverSideEncryption: AES256
+    blockPublicAccess: true
+    name: ${self:service}-${sls:stage}-bucket
+
   iam:
     role:
       statements:
@@ -21,10 +25,10 @@ provider:
             - "dynamodb:UpdateItem"
             - "dynamodb:DeleteItem"
           Resource: "arn:aws:dynamodb:${aws:region}:${aws:accountId}:table\
-            /${self:service}-customerTable-${sls:stage}"
+            /${self:service}-${sls:stage}-customerTable"
 
   environment:
-    DYNAMODB_CUSTOMER_TABLE: ${self:service}-customerTable-${sls:stage}
+    DYNAMODB_CUSTOMER_TABLE: ${self:service}-${sls:stage}-customerTable
 
 plugins:
   - serverless-bundle
@@ -44,6 +48,7 @@ functions:
       - httpApi:
           path: /
           method: get
+
 resources:
   Resources:
     CustomerTable:
@@ -56,7 +61,7 @@ resources:
         KeySchema:
           - AttributeName: primary_key
             KeyType: HASH
-        TableName: ${self:service}-customerTable-${sls:stage}
+        TableName: ${self:service}-${sls:stage}-customerTable
 
 custom:
   bundle:
