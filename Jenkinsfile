@@ -36,6 +36,52 @@ pipeline {
                 sh 'docker build --target test .'
             }
         }
+        stage('Publish to AWS') {
+            environment {
+                AWS_ACCESS_KEY_ID = credentials('AMOSCHINI_AWS_ACCESS_KEY_ID')
+                AWS_SECRET_ACCESS_KEY = credentials('AMOSCHINI_AWS_SECRET_ACCESS_KEY')
+            }
+            stages {
+                stage('Publish pre-release packages from main') {
+                    when {
+                        branch 'main'
+                    }
+                    steps {
+                        sh '''
+                          sh build-n-publish.sh \
+                            --commit=${GIT_COMMIT} \
+                            --environment=qa
+                          '''
+                    }
+                }
+                stage('Publish pre-release packages from INT') {
+                    when {
+                        branch 'INT'
+                    }
+                    steps {
+                        sh '''
+                          sh build-n-publish.sh \
+                            --commit=${GIT_COMMIT} \
+                            --environment=development
+                          '''
+                    }
+                }
+                stage('Publish final version images') {
+                    when {
+                        expression {
+                            return isVersionTag(readCurrentTag())
+                        }
+                    }
+                    steps {
+                        sh '''
+                          sh build-n-publish.sh \
+                            --commit=${GIT_COMMIT} \
+                            --environment=production
+                          '''
+                    }
+                }
+            }
+        }
     }
 }
 
