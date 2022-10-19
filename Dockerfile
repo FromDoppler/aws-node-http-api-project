@@ -3,7 +3,7 @@ WORKDIR /src
 COPY ./*.sh ./
 RUN shellcheck -e SC1091,SC1090 ./*.sh
 
-FROM node:16.18.0 AS restore
+FROM amaysim/serverless:3.23.0 AS restore
 WORKDIR /src
 COPY package.json yarn.lock ./
 RUN yarn
@@ -16,3 +16,10 @@ RUN yarn verify-format
 FROM restore AS test
 ENV CI=true
 RUN yarn test
+
+FROM restore AS final
+WORKDIR /src
+ARG version=unknown
+# TODO: do something with the version
+# RUN echo $version > /app/wwwroot/version.txt
+LABEL name="lambdas-poc" version="$version"

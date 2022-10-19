@@ -15,20 +15,24 @@ cd "$(dirname "$0")"
 export MSYS_NO_PATHCONV=1
 export MSYS2_ARG_CONV_EXCL="*"
 
+commit=""
 environment=""
 
 print_help () {
     echo ""
-    echo "Usage: sh decomission.sh [OPTIONS]"
+    echo "Usage: sh build-n-publish.sh [OPTIONS]"
     echo ""
-    echo "Remove Lambdas and related infrastructure from AWS"
+    echo "Use Docker to build project's bundle files and publish Lambdas and"
+    echo "related infrastructure to AWS."
     echo ""
     echo "Options:"
     echo "  -e, --environment (\"development\"|\"qa\"|\"production\") (mandatory)"
+    echo "  -c, --commit (mandatory)"
     echo "  -h, --help"
     echo
     echo "Examples:"
-    echo "  deploy-html-editor-api-stack.sh -e=production"
+    echo "  sh build-n-publish.sh.sh -c=aee25c286a7c8265e2b32ccc293f5ab0bd7a9d57 -e=production"
+    echo "  sh build-n-publish.sh.sh --commit=aee25c286a7c8265e2b32ccc293f5ab0bd7a9d57 -0-environment=production"
 }
 
 # serverless config credentials --provider aws --key YOUR_AWS_ACCESS_KEY --secret YOUR_AWS_SECRET_KEY
@@ -38,6 +42,9 @@ for i in "$@" ; do
 case $i in
     -e=*|--environment=*)
     environment="${i#*=}"
+    ;;
+    -c=*|--commit=*)
+    commit="${i#*=}"
     ;;
     -h|--help)
     print_help
@@ -59,7 +66,23 @@ if [ "${environment}" != "development" ] && [ "${environment}" != "qa" ] && [ "$
     exit 1
 fi
 
-# Do not stop on error
-set +e
+if [ -z "${commit}" ]
+then
+  echo "Error: commit parameter is mandatory"
+  print_help
+  exit 1
+fi
 
-serverless remove --stage "${environment}" --config serverless.yml
+tag="${environment}-${commit}"
+
+docker build . \
+  --tag "${tag}" \
+  --build-arg version="${tag}" \
+
+docker run --rm \
+  -e AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY \
+  "${tag}" \
+  /bin/sh -c "\
+    sh ci-deploy.sh --environment=${environment} \
+    "

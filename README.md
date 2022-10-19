@@ -14,11 +14,11 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 
 - [x] Upload to a public repository
 
-- [ ] [DE-829](https://makingsense.atlassian.net/browse/DE-829) Finish Serverless configuration
-  - [ ] Configure API Gateway? Could it be replaced by Cloudflare?
-  - [ ] Take a look to Juane's examples
-  - [ ] Take a look to [Serverless TypeScript Starter](https://github.com/AnomalyInnovations/serverless-typescript-starter)
-- [ ] [DE-830](https://makingsense.atlassian.net/browse/DE-830) CD in our Jenkins deploying to AWS
+- [x] [DE-829](https://makingsense.atlassian.net/browse/DE-829) Finish Serverless configuration
+  - [x] Configure API Gateway? Could it be replaced by Cloudflare?
+  - [x] Take a look to Juane's examples
+  - [x] Take a look to [Serverless TypeScript Starter](https://github.com/AnomalyInnovations/serverless-typescript-starter)
+- [x] [DE-830](https://makingsense.atlassian.net/browse/DE-830) CD in our Jenkins deploying to AWS
   - Docker image with Serverless https://hub.docker.com/r/20minutes/node-16-yarn-serverless-3
   - Docker image with Serverless https://hub.docker.com/r/amaysim/serverless
 - [ ] [DE-831](https://makingsense.atlassian.net/browse/DE-831) Expose API in a friendly domain
