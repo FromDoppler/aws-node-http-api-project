@@ -28,7 +28,7 @@ print_help () {
     echo "  -h, --help"
     echo
     echo "Examples:"
-    echo "  deploy-html-editor-api-stack.sh -e=production"
+    echo "  sh ci-deploy.sh -e=production"
 }
 
 # serverless config credentials --provider aws --key YOUR_AWS_ACCESS_KEY --secret YOUR_AWS_SECRET_KEY
@@ -36,7 +36,7 @@ print_help () {
 
 for i in "$@" ; do
 case $i in
-    -e=*|--enviroments=*)
+    -e=*|--environment=*)
     environment="${i#*=}"
     ;;
     -h|--help)

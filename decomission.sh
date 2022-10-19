@@ -36,7 +36,7 @@ print_help () {
 
 for i in "$@" ; do
 case $i in
-    -e=*|--enviroments=*)
+    -e=*|--environment=*)
     environment="${i#*=}"
     ;;
     -h|--help)
