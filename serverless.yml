@@ -10,9 +10,7 @@ provider:
   runtime: nodejs16.x
   architecture: arm64
   deploymentBucket:
-    serverSideEncryption: AES256
-    blockPublicAccess: true
-    name: ${self:service}-${sls:stage}-bucket
+    name: doppler-fun-${sls:stage}
 
   httpApi:
     shouldStartNameWithService: true
