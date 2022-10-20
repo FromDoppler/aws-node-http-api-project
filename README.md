@@ -21,7 +21,7 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 - [x] [DE-830](https://makingsense.atlassian.net/browse/DE-830) CD in our Jenkins deploying to AWS
   - Docker image with Serverless https://hub.docker.com/r/20minutes/node-16-yarn-serverless-3
   - Docker image with Serverless https://hub.docker.com/r/amaysim/serverless
-- [ ] [DE-831](https://makingsense.atlassian.net/browse/DE-831) Expose API in a friendly domain
+- [x] [DE-831](https://makingsense.atlassian.net/browse/DE-831) Expose API in a friendly domain
 - [ ] [DE-832](https://makingsense.atlassian.net/browse/DE-832) Token JWT validation
   - JWT Validation runs in the API Gateway or inside the lambdas?
   - JWT payload should be available inside the lambdas
@@ -39,6 +39,62 @@ Serverless Framework.
 This template does not include any kind of persistence (database). For more advanced examples, check out the
 [serverless/examples repository](https://github.com/serverless/examples/) which includes Typescript, Mongo, DynamoDB
 and other examples.
+
+## Manual setup
+
+### Buckets
+
+For the moment, we decided to share a bucket for all lambda functions in the same environment, so we have three:
+
+- `doppler-fun-development`
+- `doppler-fun-qa`
+- `doppler-fun-production`
+
+Each of them has been created manually using the [S3 Buckets page](https://s3.console.aws.amazon.com/s3/buckets?region=sa-east-1).
+
+![s3-buckets](./docs/s3-buckets.png)
+
+### Custom domain
+
+For the moment, we decided to share a custom domain for all of our Lambdas API Gateways and map them in the following way:
+
+- `{custom-domain}/int/lambdas-poc` ➡ `lambdas-poc-development` API
+- `{custom-domain}/qa/lambdas-poc` ➡ `lambdas-poc-qa` API
+- `{custom-domain}/lambdas-poc` ➡ `lambdas-poproduction` API
+
+Our custom domain is managed by Cloudflare.
+
+#### Step by step configuration
+
+1. Create a certificate
+
+![request-certificate-1](./docs/request-certificate-1.png)
+
+![request-certificate-2](./docs/request-certificate-2.png)
+
+![request-certificate-3](./docs/request-certificate-3.png)
+
+2. Validate certificate
+
+![validate-certificate-1](./docs/validate-certificate-1.png)
+
+![validate-certificate-2](./docs/validate-certificate-2.png)
+
+![validate-certificate-3](./docs/validate-certificate-3.png)
+
+3. Create custom domain in AWS
+
+![create-custom-domain-1](./docs/create-custom-domain-1.png)
+
+4. Add DNS to the custom domain
+
+![dns-custom-domain-1](./docs/dns-custom-domain-1.png)
+
+![dns-custom-domain-2](./docs/dns-custom-domain-2.png)
+
+5. Configure mappings
+
+![configure-domain-mappings](./docs/configure-domain-mappings.png)
 
 ## Usage
 
