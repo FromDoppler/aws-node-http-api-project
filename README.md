@@ -21,7 +21,7 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 - [x] [DE-830](https://makingsense.atlassian.net/browse/DE-830) CD in our Jenkins deploying to AWS
   - Docker image with Serverless https://hub.docker.com/r/20minutes/node-16-yarn-serverless-3
   - Docker image with Serverless https://hub.docker.com/r/amaysim/serverless
-- [ ] [DE-831](https://makingsense.atlassian.net/browse/DE-831) Expose API in a friendly domain
+- [x] [DE-831](https://makingsense.atlassian.net/browse/DE-831) Expose API in a friendly domain
 - [ ] [DE-832](https://makingsense.atlassian.net/browse/DE-832) Token JWT validation
   - JWT Validation runs in the API Gateway or inside the lambdas?
   - JWT payload should be available inside the lambdas
