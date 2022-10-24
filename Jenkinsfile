@@ -38,8 +38,8 @@ pipeline {
         }
         stage('Publish to AWS') {
             environment {
-                AWS_ACCESS_KEY_ID = credentials('AMOSCHINI_AWS_ACCESS_KEY_ID')
-                AWS_SECRET_ACCESS_KEY = credentials('AMOSCHINI_AWS_SECRET_ACCESS_KEY')
+                AWS_ACCESS_KEY_ID = credentials('aws-doppler-fun-jenkins-cicd-id')
+                AWS_SECRET_ACCESS_KEY = credentials('aws-doppler-fun-jenkins-cicd-key')
             }
             stages {
                 stage('Publish pre-release packages from main') {
@@ -62,7 +62,7 @@ pipeline {
                         sh '''
                           sh build-n-publish.sh \
                             --commit=${GIT_COMMIT} \
-                            --environment=development
+                            --environment=int
                           '''
                     }
                 }

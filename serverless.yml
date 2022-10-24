@@ -1,16 +1,17 @@
 service: lambdas-poc
 frameworkVersion: "3"
+useDotenv: true
 
 package:
   individually: true
 
 provider:
   name: aws
-  region: "us-east-1"
+  region: ${env:REGION}
   runtime: nodejs16.x
   architecture: arm64
   deploymentBucket:
-    name: doppler-fun-${sls:stage}
+    name: doppler-fun-${sls:stage}-${env:REGION}
 
   httpApi:
     shouldStartNameWithService: true
@@ -45,7 +46,7 @@ provider:
             - "dynamodb:Scan"
             - "dynamodb:UpdateItem"
             - "dynamodb:DeleteItem"
-          Resource: "arn:aws:dynamodb:${aws:region}:${aws:accountId}:table\
+          Resource: "arn:aws:dynamodb:${env:REGION}:${aws:accountId}:table\
             /${self:service}-${sls:stage}-customerTable"
 
   environment:
@@ -53,6 +54,7 @@ provider:
 
 plugins:
   - serverless-bundle
+  - serverless-domain-manager
   - serverless-dotenv-plugin
   - serverless-offline
 
@@ -89,3 +91,10 @@ custom:
     packager: "yarn"
     disableForkTsChecker: false
     linting: true
+  customDomain:
+    domainName: ${env:DOMAIN}
+    basePath: ${self:service}
+    apiType: http
+    createRoute53Record: false
+    endpointType: REGIONAL
+    autoDomain: false

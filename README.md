@@ -46,21 +46,21 @@ and other examples.
 
 For the moment, we decided to share a bucket for all lambda functions in the same environment, so we have three:
 
-- `doppler-fun-development`
-- `doppler-fun-qa`
-- `doppler-fun-production`
+- `doppler-fun-int-us-east-2`
+- `doppler-fun-qa-us-east-2`
+- `doppler-fun-production-us-east-2`
 
-Each of them has been created manually using the [S3 Buckets page](https://s3.console.aws.amazon.com/s3/buckets?region=sa-east-1).
+Each of them has been created manually using the [S3 Buckets page](https://s3.console.aws.amazon.com/s3/buckets?region=sa-east-2).
 
 ![s3-buckets](./docs/s3-buckets.png)
 
 ### Custom domain
 
-For the moment, we decided to share a custom domain for all of our Lambdas API Gateways and map them in the following way:
+We are using a custom domain for each environment:
 
-- `{custom-domain}/int/lambdas-poc` ➡ `lambdas-poc-development` API
-- `{custom-domain}/qa/lambdas-poc` ➡ `lambdas-poc-qa` API
-- `{custom-domain}/lambdas-poc` ➡ `lambdas-poproduction` API
+- `{custom-domain}.fromdoppler.com/lambdas-poc/` ➡ `lambdas-poc-production` API
+- `{custom-domain}qa.fromdoppler.net/lambdas-poc/` ➡ `lambdas-poc-qa` API
+- `{custom-domain}int.fromdoppler.net/lambdas-poc/` ➡ `lambdas-poc-int` API
 
 Our custom domain is managed by Cloudflare.
 
@@ -94,7 +94,7 @@ Our custom domain is managed by Cloudflare.
 
 5. Configure mappings
 
-![configure-domain-mappings](./docs/configure-domain-mappings.png)
+Now it is done by code 😀
 
 ## Usage
 
