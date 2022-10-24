@@ -30,6 +30,10 @@
         "coverlet\\.collector"
       ],
       "automerge": true
+    },
+    {
+      "matchPackageNames": ["aws-sdk"],
+      "extends": ["schedule:monthly"]
     }
   ]
 }
