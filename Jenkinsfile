@@ -62,7 +62,7 @@ pipeline {
                         sh '''
                           sh build-n-publish.sh \
                             --commit=${GIT_COMMIT} \
-                            --environment=development
+                            --environment=int
                           '''
                     }
                 }

@@ -24,7 +24,7 @@ print_help () {
     echo "Remove Lambdas and related infrastructure from AWS"
     echo ""
     echo "Options:"
-    echo "  -e, --environment (\"development\"|\"qa\"|\"production\") (mandatory)"
+    echo "  -e, --environment (\"int\"|\"qa\"|\"production\") (mandatory)"
     echo "  -h, --help"
     echo
     echo "Examples:"
@@ -52,9 +52,8 @@ if [ -z "${environment}" ]; then
     exit 1
 fi
 
-# TODO: consider renaming development by int to make it consistent with other Doppler services
-if [ "${environment}" != "development" ] && [ "${environment}" != "qa" ] && [ "${environment}" != "production" ]; then
-    echo "Error: environment parameter value should be development, qa or production"
+if [ "${environment}" != "int" ] && [ "${environment}" != "qa" ] && [ "${environment}" != "production" ]; then
+    echo "Error: environment parameter value should be int, qa or production"
     print_help
     exit 1
 fi

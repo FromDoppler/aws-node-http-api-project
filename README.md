@@ -46,9 +46,9 @@ and other examples.
 
 For the moment, we decided to share a bucket for all lambda functions in the same environment, so we have three:
 
-- `doppler-fun-development`
-- `doppler-fun-qa`
-- `doppler-fun-production`
+- `doppler-fun-int-us-east-2`
+- `doppler-fun-qa-us-east-2`
+- `doppler-fun-production-us-east-2`
 
 Each of them has been created manually using the [S3 Buckets page](https://s3.console.aws.amazon.com/s3/buckets?region=sa-east-1).
 
