@@ -6,7 +6,7 @@ export class DynamoDbClient implements DbClient {
 
   constructor(private _tableName: string) {}
 
-  put = async (item) => {
+  put = async (item: { [key: string]: any }) => {
     const putParams = {
       TableName: this._tableName,
       Item: item,
