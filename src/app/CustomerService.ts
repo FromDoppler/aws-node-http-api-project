@@ -16,7 +16,12 @@ export class CustomerService {
     return (result.Items ?? []).map(this.mapCustomer);
   };
 
-  private mapCustomer(item: any) : Customer {
+  get: (email: string) => Promise<Customer | null> = async (email: string) => {
+    const result = await this._dbClient.get({ email });
+    return result.Item ? this.mapCustomer(result.Item) : null;
+  };
+
+  private mapCustomer(item: any): Customer {
     return {
       email: item.email,
       name: item.name,

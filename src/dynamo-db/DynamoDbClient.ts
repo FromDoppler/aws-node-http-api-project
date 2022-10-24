@@ -25,4 +25,15 @@ export class DynamoDbClient implements DbClient {
       Count: result.Count,
     };
   };
+
+  get = async (key: { [key: string]: any }) => {
+    const getParams = {
+      TableName: this._tableName,
+      Key: key,
+    };
+
+    const result = await this._dynamoDb.get(getParams).promise();
+
+    return { Item: result.Item };
+  };
 }

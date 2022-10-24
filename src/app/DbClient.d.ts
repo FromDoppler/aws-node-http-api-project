@@ -4,4 +4,5 @@ export interface DbClient {
     Items: any[];
     Count: number;
   }>;
+  get: (key: { [key: string]: any }) => Promise<{ Item: any }>;
 }

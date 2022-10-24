@@ -50,6 +50,47 @@ describe(CustomerService.name, () => {
       ]);
     });
   });
+
+  describe("get", () => {
+    it("Should pass the right key to db", async () => {
+      // Arrange
+      const { dbClientDouble, sut } = createTestContext();
+
+      // Act
+      await sut.get("email1");
+
+      // Assert
+      expect(dbClientDouble.get).toHaveBeenCalledWith({ email: "email1" });
+    });
+
+    it("Should return null when the item does not exist", async () => {
+      // Arrange
+      const { sut } = createTestContext();
+
+      // Act
+      const result = await sut.get("email1");
+
+      // Assert
+      expect(result).toBeNull();
+    });
+
+    it("Should return map the resulting item", async () => {
+      // Arrange
+      const { dbClientDouble, sut } = createTestContext();
+      dbClientDouble.get.mockImplementation(async () => ({
+        Item: { email: "email1", name: "name1" },
+      }));
+
+      // Act
+      const result = await sut.get("email1");
+
+      // Assert
+      expect(result).toEqual({
+        email: "email1",
+        name: "name1",
+      });
+    });
+  });
 });
 
 function createTestContext() {

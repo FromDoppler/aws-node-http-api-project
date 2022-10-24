@@ -71,6 +71,12 @@ functions:
       - httpApi:
           path: /
           method: get
+  getCustomer:
+    handler: src/getCustomer.getCustomer
+    events:
+      - httpApi:
+          path: /{email}
+          method: get
 
 resources:
   Resources:
