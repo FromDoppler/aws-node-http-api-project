@@ -6,16 +6,16 @@ export class CustomerService {
 
   create = async ({ name, email }: Customer) => {
     await this._dbClient.put({
-      primary_key: name,
       email: email,
+      name: name,
     });
   };
 
   getAll: () => Promise<Customer[]> = async () => {
     const result = await this._dbClient.scan();
-    return result.Items.map((customer) => ({
-      name: customer.primary_key,
-      email: customer.email,
+    return (result.Items ?? []).map((item) => ({
+      email: item.email,
+      name: item.name,
     }));
   };
 }

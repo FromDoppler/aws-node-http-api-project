@@ -21,8 +21,8 @@ export class DynamoDbClient implements DbClient {
     const result = await this._dynamoDb.scan(scanParams).promise();
 
     return {
-      Items: result.Items ?? [],
-      Count: result.Count ?? 0,
+      Items: result.Items,
+      Count: result.Count,
     };
   };
 }

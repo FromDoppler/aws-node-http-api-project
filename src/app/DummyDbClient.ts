@@ -11,8 +11,8 @@ export class DummyDbClient implements DbClient {
     return {
       Items: [
         {
-          primary_key: this._configurationValue,
           email: this._configurationValue,
+          name: this._configurationValue,
         },
       ],
       Count: 1,
