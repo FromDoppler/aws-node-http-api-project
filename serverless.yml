@@ -91,3 +91,10 @@ custom:
     packager: "yarn"
     disableForkTsChecker: false
     linting: true
+  customDomain:
+    domainName: ${env:DOMAIN}
+    basePath: ${self:service}
+    apiType: http
+    createRoute53Record: false
+    endpointType: REGIONAL
+    autoDomain: false
