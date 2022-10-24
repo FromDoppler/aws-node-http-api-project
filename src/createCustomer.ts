@@ -1,11 +1,11 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { createCustomerService } from "./compositionRoot";
+import { getCustomerService } from "./compositionRoot";
 
 export const createCustomer: APIGatewayProxyHandler = async (
   event,
   context
 ) => {
-  const customerService = createCustomerService();
+  const customerService = getCustomerService();
 
   const body = JSON.parse(Buffer.from(event.body, "base64").toString());
   await customerService.create({ name: body.name, email: body.email });

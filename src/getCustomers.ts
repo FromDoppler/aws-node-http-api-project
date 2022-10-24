@@ -1,8 +1,8 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { createCustomerService } from "./compositionRoot";
+import { getCustomerService } from "./compositionRoot";
 
 export const getCustomers: APIGatewayProxyHandler = async (event, context) => {
-  const customerService = createCustomerService();
+  const customerService = getCustomerService();
 
   const result = await customerService.getAll();
 
