@@ -42,5 +42,32 @@ describe(CustomerService.name, () => {
       // Assert
       expect(result).toEqual([]);
     });
+
+    it("Should map items on GetAll", async () => {
+      // Arrange
+      const dbItems = [
+        { email: "email1", name: "name1", anotherField: "anotherField" },
+        { email: "email2", name: "name2" },
+      ];
+      const dbClientDouble: DbClient = {
+        put: async () => {
+          /* do nothing */
+        },
+        scan: async () => ({ Items: dbItems, Count: dbItems.length }),
+        get: async () => {
+          return null;
+        },
+      };
+      const sut = new CustomerService(dbClientDouble);
+
+      // Act
+      const result = await sut.getAll();
+
+      // Assert
+      expect(result).toEqual([
+        { email: "email1", name: "name1" },
+        { email: "email2", name: "name2" },
+      ]);
+    });
   });
 });

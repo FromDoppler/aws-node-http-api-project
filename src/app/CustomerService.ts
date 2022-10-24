@@ -13,9 +13,13 @@ export class CustomerService {
 
   getAll: () => Promise<Customer[]> = async () => {
     const result = await this._dbClient.scan();
-    return (result.Items ?? []).map((item) => ({
+    return (result.Items ?? []).map(this.mapCustomer);
+  };
+
+  private mapCustomer(item: any) : Customer {
+    return {
       email: item.email,
       name: item.name,
-    }));
-  };
+    };
+  }
 }
