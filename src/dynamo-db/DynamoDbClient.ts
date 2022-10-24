@@ -14,6 +14,24 @@ export class DynamoDbClient implements DbClient {
     await this._dynamoDb.put(putParams).promise();
   };
 
+  update = async ({
+    Key,
+    UpdateExpression,
+    ExpressionAttributeValues,
+  }: {
+    Key: { [key: string]: any };
+    UpdateExpression: string;
+    ExpressionAttributeValues: { [key: string]: any };
+  }) => {
+    const updateParams = {
+      TableName: this._tableName,
+      Key,
+      UpdateExpression,
+      ExpressionAttributeValues,
+    };
+    await this._dynamoDb.update(updateParams).promise();
+  };
+
   scan = async () => {
     const scanParams = {
       TableName: this._tableName,

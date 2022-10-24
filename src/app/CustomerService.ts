@@ -21,6 +21,14 @@ export class CustomerService {
     return result.Item ? this.mapCustomer(result.Item) : null;
   };
 
+  registerVisit = async (email: string, date: Date) => {
+    await this._dbClient.update({
+      Key: { email },
+      UpdateExpression: "set lastVisit = :lastVisit",
+      ExpressionAttributeValues: { ":lastVisit": date.toISOString() },
+    });
+  };
+
   private mapCustomer(item: any): Customer {
     return {
       email: item.email,

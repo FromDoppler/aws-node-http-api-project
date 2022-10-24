@@ -77,6 +77,12 @@ functions:
       - httpApi:
           path: /{email}
           method: get
+  customerVisit:
+    handler: src/customerVisit.customerVisit
+    events:
+      - httpApi:
+          path: /{email}/visit
+          method: post
 
 resources:
   Resources:

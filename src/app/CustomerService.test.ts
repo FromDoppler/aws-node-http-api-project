@@ -114,11 +114,33 @@ describe(CustomerService.name, () => {
       });
     });
   });
+
+  describe("registerVisit", () => {
+    it("Should pass the right data to db", async () => {
+      // Arrange
+      const date = new Date("Date Mon Oct 24 2022 17:21:08 GMT-0300");
+      const expectedValue = "2022-10-24T20:21:08.000Z";
+      const { dbClientDouble, sut } = createTestContext();
+
+      // Act
+      await sut.registerVisit("email1", date);
+
+      // Assert
+      expect(dbClientDouble.update).toHaveBeenCalledWith({
+        Key: { email: "email1" },
+        UpdateExpression: "set lastVisit = :lastVisit",
+        ExpressionAttributeValues: { ":lastVisit": expectedValue },
+      });
+    });
+  });
 });
 
 function createTestContext() {
   const dbClientDouble = {
     put: jest.fn(async () => {
+      /* do nothing */
+    }),
+    update: jest.fn(async () => {
       /* do nothing */
     }),
     scan: jest.fn(async () => ({ Items: [], Count: 0 })),

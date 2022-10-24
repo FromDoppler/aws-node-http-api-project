@@ -16,6 +16,10 @@ export class DummyDbClient implements DbClient {
     // intentionally empty
   };
 
+  update = async () => {
+    // intentionally empty
+  };
+
   scan = async () => {
     return {
       Items: [
