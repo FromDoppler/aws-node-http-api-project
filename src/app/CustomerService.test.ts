@@ -1,20 +1,10 @@
 import { CustomerService } from "./CustomerService";
-import { DbClient } from "./DbClient";
 
 describe(CustomerService.name, () => {
   describe("getAll", () => {
     it("Should return an empty array when there are no items in DB", async () => {
       // Arrange
-      const dbClientDouble: DbClient = {
-        put: async () => {
-          /* do nothing */
-        },
-        scan: async () => ({ Items: [], Count: 0 }),
-        get: async () => {
-          return null;
-        },
-      };
-      const sut = new CustomerService(dbClientDouble);
+      const { sut } = createTestContext();
 
       // Act
       const result = await sut.getAll();
@@ -23,18 +13,13 @@ describe(CustomerService.name, () => {
       expect(result).toEqual([]);
     });
 
-    it("Should return an empty array when DB return null", async () => {
+    it("Should return an empty array when DB returns null", async () => {
       // Arrange
-      const dbClientDouble: DbClient = {
-        put: async () => {
-          /* do nothing */
-        },
-        scan: async () => ({ Items: null, Count: null }),
-        get: async () => {
-          return null;
-        },
-      };
-      const sut = new CustomerService(dbClientDouble);
+      const { dbClientDouble, sut } = createTestContext();
+      dbClientDouble.scan.mockImplementation(async () => ({
+        Items: null,
+        Count: null,
+      }));
 
       // Act
       const result = await sut.getAll();
@@ -49,16 +34,11 @@ describe(CustomerService.name, () => {
         { email: "email1", name: "name1", anotherField: "anotherField" },
         { email: "email2", name: "name2" },
       ];
-      const dbClientDouble: DbClient = {
-        put: async () => {
-          /* do nothing */
-        },
-        scan: async () => ({ Items: dbItems, Count: dbItems.length }),
-        get: async () => {
-          return null;
-        },
-      };
-      const sut = new CustomerService(dbClientDouble);
+      const { dbClientDouble, sut } = createTestContext();
+      dbClientDouble.scan.mockImplementation(async () => ({
+        Items: dbItems,
+        Count: dbItems.length,
+      }));
 
       // Act
       const result = await sut.getAll();
@@ -71,3 +51,17 @@ describe(CustomerService.name, () => {
     });
   });
 });
+
+function createTestContext() {
+  const dbClientDouble = {
+    put: jest.fn(async () => {
+      /* do nothing */
+    }),
+    scan: jest.fn(async () => ({ Items: [], Count: 0 })),
+    get: jest.fn(async () => {
+      return { Item: undefined };
+    }),
+  };
+  const sut = new CustomerService(dbClientDouble);
+  return { dbClientDouble, sut };
+}
