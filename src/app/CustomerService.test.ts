@@ -45,8 +45,30 @@ describe(CustomerService.name, () => {
 
       // Assert
       expect(result).toEqual([
-        { email: "email1", name: "name1" },
+        { email: "email1", name: "name1", lastVisit: null },
+        { email: "email2", name: "name2", lastVisit: null },
+      ]);
+    });
+
+    it("Should include lastVisit field", async () => {
+      // Arrange
+      const dbItems = [
+        { email: "email1", name: "name1", lastVisit: "2022-10-24T16:42:00Z" },
         { email: "email2", name: "name2" },
+      ];
+      const { dbClientDouble, sut } = createTestContext();
+      dbClientDouble.scan.mockImplementation(async () => ({
+        Items: dbItems,
+        Count: dbItems.length,
+      }));
+
+      // Act
+      const result = await sut.getAll();
+
+      // Assert
+      expect(result).toEqual([
+        { email: "email1", name: "name1", lastVisit: "2022-10-24T16:42:00Z" },
+        { email: "email2", name: "name2", lastVisit: null },
       ]);
     });
   });
@@ -88,6 +110,7 @@ describe(CustomerService.name, () => {
       expect(result).toEqual({
         email: "email1",
         name: "name1",
+        lastVisit: null,
       });
     });
   });

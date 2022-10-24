@@ -8,7 +8,11 @@ export const createCustomer: APIGatewayProxyHandler = async (
   const customerService = getCustomerService();
 
   const body = JSON.parse(Buffer.from(event.body, "base64").toString());
-  await customerService.create({ name: body.name, email: body.email });
+  await customerService.create({
+    name: body.name,
+    email: body.email,
+    lastVisit: null,
+  });
 
   return {
     statusCode: 201,

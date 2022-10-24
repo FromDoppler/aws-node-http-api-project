@@ -25,6 +25,7 @@ export class CustomerService {
     return {
       email: item.email,
       name: item.name,
+      lastVisit: item.lastVisit || null,
     };
   }
 }
