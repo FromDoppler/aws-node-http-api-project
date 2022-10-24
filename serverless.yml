@@ -7,11 +7,11 @@ package:
 
 provider:
   name: aws
-  region: ${env:AWS_REGION}
+  region: ${env:REGION}
   runtime: nodejs16.x
   architecture: arm64
   deploymentBucket:
-    name: doppler-fun-${sls:stage}
+    name: doppler-fun-${sls:stage}-${env:REGION}
 
   httpApi:
     shouldStartNameWithService: true
@@ -46,7 +46,7 @@ provider:
             - "dynamodb:Scan"
             - "dynamodb:UpdateItem"
             - "dynamodb:DeleteItem"
-          Resource: "arn:aws:dynamodb:${env:AWS_REGION}:${aws:accountId}:table\
+          Resource: "arn:aws:dynamodb:${env:REGION}:${aws:accountId}:table\
             /${self:service}-${sls:stage}-customerTable"
 
   environment:
