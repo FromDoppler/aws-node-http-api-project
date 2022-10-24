@@ -1,12 +1,13 @@
 service: lambdas-poc
 frameworkVersion: "3"
+useDotenv: true
 
 package:
   individually: true
 
 provider:
   name: aws
-  region: "us-east-1"
+  region: ${env:AWS_REGION}
   runtime: nodejs16.x
   architecture: arm64
   deploymentBucket:
@@ -45,7 +46,7 @@ provider:
             - "dynamodb:Scan"
             - "dynamodb:UpdateItem"
             - "dynamodb:DeleteItem"
-          Resource: "arn:aws:dynamodb:${aws:region}:${aws:accountId}:table\
+          Resource: "arn:aws:dynamodb:${env:AWS_REGION}:${aws:accountId}:table\
             /${self:service}-${sls:stage}-customerTable"
 
   environment:
