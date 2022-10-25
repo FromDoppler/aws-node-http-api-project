@@ -38,13 +38,16 @@ export class CustomerService {
   };
 
   get: (email: string) => Promise<Customer | null> = async (email: string) => {
+    const key = { email };
     const result = await this._dbClient
       .get({
         TableName: this._customerTableName,
-        Key: { email },
+        Key: key,
       })
       .promise();
-    return result.Item ? this.mapCustomer(result.Item) : null;
+
+    const item = result.Item || key;
+    return this.mapCustomer(item);
   };
 
   registerVisit = async (email: string, date: Date): Promise<void> => {

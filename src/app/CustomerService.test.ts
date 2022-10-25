@@ -96,7 +96,7 @@ describe(CustomerService.name, () => {
       });
     });
 
-    it("Should return null when the item does not exist", async () => {
+    it("Should return a empty object when the item does not exist", async () => {
       // Arrange
       const { sut } = createTestContext();
 
@@ -104,7 +104,10 @@ describe(CustomerService.name, () => {
       const result = await sut.get("email1");
 
       // Assert
-      expect(result).toBeNull();
+      expect(result).toEqual({
+        email: "email1",
+        lastVisit: null,
+      });
     });
 
     it("Should return map the resulting item", async () => {
