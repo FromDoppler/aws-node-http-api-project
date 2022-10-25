@@ -9,7 +9,7 @@ export const createCustomer: APIGatewayProxyHandler = async (
   const customerService = getCustomerService();
   const jwtFilter = getJwtFilter();
 
-  return jwtFilter.apply(event, async () => {
+  return jwtFilter.apply(event, { allowSuperUser: true }, async () => {
     const body = JSON.parse(Buffer.from(event.body, "base64").toString());
     await customerService.create({
       name: body.name,
