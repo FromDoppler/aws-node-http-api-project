@@ -1,34 +1,33 @@
-import { DbClient } from "src/app/DbClient";
+import * as DynamoDB from "aws-sdk/clients/dynamodb";
+import { createPromiseWrapperWithDelay } from "../shared/utils";
 
-export class DummyDbClient implements DbClient {
-  constructor(private _configurationValue: string) {}
-
-  get = async (key: { [key: string]: any }) => {
-    return {
-      Item: {
-        email: key.email,
-        name: this._configurationValue,
-      },
-    };
-  };
-
-  put = async () => {
-    // intentionally empty
-  };
-
-  update = async () => {
-    // intentionally empty
-  };
-
-  scan = async () => {
-    return {
-      Items: [
-        {
-          email: this._configurationValue,
-          name: this._configurationValue,
+export function createDummyDynamoDbClient({
+  delay = 1000,
+  configurationValue = "UNSET",
+}: {
+  delay?: number;
+  configurationValue?: string;
+} = {}): DynamoDB.DocumentClient {
+  const dbClientDouble = {
+    put: () => createPromiseWrapperWithDelay(delay),
+    update: () => createPromiseWrapperWithDelay(delay),
+    scan: () =>
+      createPromiseWrapperWithDelay(delay, () => ({
+        Items: [
+          {
+            email: configurationValue,
+            name: configurationValue,
+          },
+        ],
+        Count: 1,
+      })),
+    get: (key: DynamoDB.Key) =>
+      createPromiseWrapperWithDelay(delay, () => ({
+        Item: {
+          email: key.email,
+          name: configurationValue,
         },
-      ],
-      Count: 1,
-    };
+      })),
   };
+  return dbClientDouble as unknown as DynamoDB.DocumentClient;
 }

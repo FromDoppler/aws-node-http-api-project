@@ -1,3 +1,5 @@
+import { DynamoDB } from "aws-sdk";
+import { createPromiseWrapper } from "../shared/utils";
 import { CustomerService } from "./CustomerService";
 
 describe(CustomerService.name, () => {
@@ -16,10 +18,12 @@ describe(CustomerService.name, () => {
     it("Should return an empty array when DB returns null", async () => {
       // Arrange
       const { dbClientDouble, sut } = createTestContext();
-      dbClientDouble.scan.mockImplementation(async () => ({
-        Items: null,
-        Count: null,
-      }));
+      dbClientDouble.scan.mockImplementation(() =>
+        createPromiseWrapper(() => ({
+          Items: null,
+          Count: null,
+        }))
+      );
 
       // Act
       const result = await sut.getAll();
@@ -35,10 +39,12 @@ describe(CustomerService.name, () => {
         { email: "email2", name: "name2" },
       ];
       const { dbClientDouble, sut } = createTestContext();
-      dbClientDouble.scan.mockImplementation(async () => ({
-        Items: dbItems,
-        Count: dbItems.length,
-      }));
+      dbClientDouble.scan.mockImplementation(() =>
+        createPromiseWrapper(() => ({
+          Items: dbItems,
+          Count: dbItems.length,
+        }))
+      );
 
       // Act
       const result = await sut.getAll();
@@ -57,10 +63,12 @@ describe(CustomerService.name, () => {
         { email: "email2", name: "name2" },
       ];
       const { dbClientDouble, sut } = createTestContext();
-      dbClientDouble.scan.mockImplementation(async () => ({
-        Items: dbItems,
-        Count: dbItems.length,
-      }));
+      dbClientDouble.scan.mockImplementation(() =>
+        createPromiseWrapper(() => ({
+          Items: dbItems,
+          Count: dbItems.length,
+        }))
+      );
 
       // Act
       const result = await sut.getAll();
@@ -76,13 +84,16 @@ describe(CustomerService.name, () => {
   describe("get", () => {
     it("Should pass the right key to db", async () => {
       // Arrange
-      const { dbClientDouble, sut } = createTestContext();
+      const { dbClientDouble, TableName, sut } = createTestContext();
 
       // Act
       await sut.get("email1");
 
       // Assert
-      expect(dbClientDouble.get).toHaveBeenCalledWith({ email: "email1" });
+      expect(dbClientDouble.get).toHaveBeenCalledWith({
+        Key: { email: "email1" },
+        TableName,
+      });
     });
 
     it("Should return null when the item does not exist", async () => {
@@ -99,9 +110,11 @@ describe(CustomerService.name, () => {
     it("Should return map the resulting item", async () => {
       // Arrange
       const { dbClientDouble, sut } = createTestContext();
-      dbClientDouble.get.mockImplementation(async () => ({
-        Item: { email: "email1", name: "name1" },
-      }));
+      dbClientDouble.get.mockImplementation(() =>
+        createPromiseWrapper(() => ({
+          Item: { email: "email1", name: "name1" },
+        }))
+      );
 
       // Act
       const result = await sut.get("email1");
@@ -120,13 +133,14 @@ describe(CustomerService.name, () => {
       // Arrange
       const date = new Date("Date Mon Oct 24 2022 17:21:08 GMT-0300");
       const expectedValue = "2022-10-24T20:21:08.000Z";
-      const { dbClientDouble, sut } = createTestContext();
+      const { dbClientDouble, TableName, sut } = createTestContext();
 
       // Act
       await sut.registerVisit("email1", date);
 
       // Assert
       expect(dbClientDouble.update).toHaveBeenCalledWith({
+        TableName,
         Key: { email: "email1" },
         UpdateExpression: "set lastVisit = :lastVisit",
         ExpressionAttributeValues: { ":lastVisit": expectedValue },
@@ -137,17 +151,15 @@ describe(CustomerService.name, () => {
 
 function createTestContext() {
   const dbClientDouble = {
-    put: jest.fn(async () => {
-      /* do nothing */
-    }),
-    update: jest.fn(async () => {
-      /* do nothing */
-    }),
-    scan: jest.fn(async () => ({ Items: [], Count: 0 })),
-    get: jest.fn(async () => {
-      return { Item: undefined };
-    }),
+    put: jest.fn(() => createPromiseWrapper()),
+    update: jest.fn(() => createPromiseWrapper()),
+    scan: jest.fn(() => createPromiseWrapper(() => ({ Items: [], Count: 0 }))),
+    get: jest.fn(() => createPromiseWrapper(() => ({ Item: undefined }))),
   };
-  const sut = new CustomerService(dbClientDouble);
-  return { dbClientDouble, sut };
+  const customerTableName = "customerTableName";
+  const sut = new CustomerService({
+    customerTableName,
+    dbClient: dbClientDouble as unknown as DynamoDB.DocumentClient,
+  });
+  return { dbClientDouble, TableName: customerTableName, sut };
 }
