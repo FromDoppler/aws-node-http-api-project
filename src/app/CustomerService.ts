@@ -6,16 +6,34 @@ export class CustomerService {
 
   create = async ({ name, email }: Customer) => {
     await this._dbClient.put({
-      primary_key: name,
       email: email,
+      name: name,
     });
   };
 
   getAll: () => Promise<Customer[]> = async () => {
     const result = await this._dbClient.scan();
-    return result.Items.map((customer) => ({
-      name: customer.primary_key,
-      email: customer.email,
-    }));
+    return (result.Items ?? []).map(this.mapCustomer);
   };
+
+  get: (email: string) => Promise<Customer | null> = async (email: string) => {
+    const result = await this._dbClient.get({ email });
+    return result.Item ? this.mapCustomer(result.Item) : null;
+  };
+
+  registerVisit = async (email: string, date: Date) => {
+    await this._dbClient.update({
+      Key: { email },
+      UpdateExpression: "set lastVisit = :lastVisit",
+      ExpressionAttributeValues: { ":lastVisit": date.toISOString() },
+    });
+  };
+
+  private mapCustomer(item: any): Customer {
+    return {
+      email: item.email,
+      name: item.name,
+      lastVisit: item.lastVisit || null,
+    };
+  }
 }

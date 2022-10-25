@@ -1,18 +1,13 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { getCustomerService } from "./compositionRoot";
 
-export const createCustomer: APIGatewayProxyHandler = async (
-  event,
-  context
-) => {
+export const customerVisit: APIGatewayProxyHandler = async (event, context) => {
   const customerService = getCustomerService();
 
-  const body = JSON.parse(Buffer.from(event.body, "base64").toString());
-  await customerService.create({
-    name: body.name,
-    email: body.email,
-    lastVisit: null,
-  });
+  await customerService.registerVisit(
+    event.pathParameters["email"],
+    new Date()
+  );
 
   return {
     statusCode: 201,

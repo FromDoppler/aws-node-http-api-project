@@ -1,18 +1,12 @@
-import { DynamoDbClient } from "src/db/DynamoDbClient";
+import { DynamoDbClient } from "src/dynamo-db/DynamoDbClient";
 import { CustomerService } from "./app/CustomerService";
-import { DbClient } from "./app/DbClient";
 import { DummyDbClient } from "./app/DummyDbClient";
 
-const createDbClient: () => DbClient = () => {
-  const dbClient =
-    process.env.BEHAVIOR === "DUMMY"
-      ? new DummyDbClient(process.env.MY_ENV_VAR)
-      : new DynamoDbClient(process.env.DYNAMODB_CUSTOMER_TABLE);
-  return dbClient;
-};
+const dbClientSingleton =
+  process.env.BEHAVIOR === "DUMMY"
+    ? new DummyDbClient(process.env.MY_ENV_VAR)
+    : new DynamoDbClient(process.env.DYNAMODB_CUSTOMER_TABLE);
 
-export const createCustomerService = () => {
-  const dbClient = createDbClient();
-  const customerService = new CustomerService(dbClient);
-  return customerService;
-};
+const customerServiceSingleton = new CustomerService(dbClientSingleton);
+
+export const getCustomerService = () => customerServiceSingleton;

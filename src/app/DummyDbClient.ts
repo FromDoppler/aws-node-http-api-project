@@ -3,7 +3,20 @@ import { DbClient } from "src/app/DbClient";
 export class DummyDbClient implements DbClient {
   constructor(private _configurationValue: string) {}
 
+  get = async (key: { [key: string]: any }) => {
+    return {
+      Item: {
+        email: key.email,
+        name: this._configurationValue,
+      },
+    };
+  };
+
   put = async () => {
+    // intentionally empty
+  };
+
+  update = async () => {
     // intentionally empty
   };
 
@@ -11,8 +24,8 @@ export class DummyDbClient implements DbClient {
     return {
       Items: [
         {
-          primary_key: this._configurationValue,
           email: this._configurationValue,
+          name: this._configurationValue,
         },
       ],
       Count: 1,

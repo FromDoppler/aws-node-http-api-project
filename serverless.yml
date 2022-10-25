@@ -71,6 +71,18 @@ functions:
       - httpApi:
           path: /
           method: get
+  getCustomer:
+    handler: src/getCustomer.getCustomer
+    events:
+      - httpApi:
+          path: /{email}
+          method: get
+  customerVisit:
+    handler: src/customerVisit.customerVisit
+    events:
+      - httpApi:
+          path: /{email}/visit
+          method: post
 
 resources:
   Resources:
@@ -78,11 +90,11 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: primary_key
+          - AttributeName: email
             AttributeType: S
         BillingMode: PAY_PER_REQUEST
         KeySchema:
-          - AttributeName: primary_key
+          - AttributeName: email
             KeyType: HASH
         TableName: ${self:service}-${sls:stage}-customerTable
 
