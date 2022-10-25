@@ -1,12 +1,24 @@
-import { DynamoDbClient } from "src/dynamo-db/DynamoDbClient";
+import { DynamoDB } from "aws-sdk";
 import { CustomerService } from "./app/CustomerService";
-import { DummyDbClient } from "./app/DummyDbClient";
+import { createDummyDynamoDbClient } from "./app/DummyDbClient";
 
-const dbClientSingleton =
-  process.env.BEHAVIOR === "DUMMY"
-    ? new DummyDbClient(process.env.MY_ENV_VAR)
-    : new DynamoDbClient(process.env.DYNAMODB_CUSTOMER_TABLE);
+let _dbClientSingleton: DynamoDB.DocumentClient;
+function getDbClientSingleton(): DynamoDB.DocumentClient {
+  return (_dbClientSingleton =
+    _dbClientSingleton ||
+    (process.env.BEHAVIOR === "DUMMY"
+      ? createDummyDynamoDbClient({
+          configurationValue: process.env.MY_ENV_VAR,
+        })
+      : new DynamoDB.DocumentClient()));
+}
 
-const customerServiceSingleton = new CustomerService(dbClientSingleton);
-
-export const getCustomerService = () => customerServiceSingleton;
+let _customerServiceSingleton: CustomerService;
+export function getCustomerService(): CustomerService {
+  return (_customerServiceSingleton =
+    _customerServiceSingleton ||
+    new CustomerService({
+      customerTableName: process.env.DYNAMODB_CUSTOMER_TABLE,
+      dbClient: getDbClientSingleton(),
+    }));
+}
