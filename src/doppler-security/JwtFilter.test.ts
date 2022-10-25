@@ -7,17 +7,43 @@ describe(JwtFilter.name, () => {
   describe.each([
     {
       tokenName: "token_Expire2033_05_18",
+      jwtFilterRules: { allowAllSignedTokens: true } as const,
     },
     {
       tokenName: "token_Superuser_Expire2033_05_18",
+      jwtFilterRules: { allowAllSignedTokens: true } as const,
+    },
+    {
+      tokenName: "token_Superuser_Expire2033_05_18",
+      jwtFilterRules: { allowSuperUser: true } as const,
+    },
+    {
+      tokenName: "token_Superuser_Expire2033_05_18",
+      jwtFilterRules: {
+        allowUserWithEmail: "test1@test.com",
+        allowSuperUser: true,
+      } as const,
     },
     {
       tokenName: "token_SuperuserFalse_Expire2033_05_18",
+      jwtFilterRules: { allowAllSignedTokens: true } as const,
     },
     {
       tokenName: "token_Account_123_test1AtTestDotCom_Expire2033_05_18",
+      jwtFilterRules: { allowAllSignedTokens: true } as const,
     },
-  ])("apply (successful)", ({ tokenName }) => {
+    {
+      tokenName: "token_Account_123_test1AtTestDotCom_Expire2033_05_18",
+      jwtFilterRules: { allowUserWithEmail: "test1@test.com" } as const,
+    },
+    {
+      tokenName: "token_Account_123_test1AtTestDotCom_Expire2033_05_18",
+      jwtFilterRules: {
+        allowUserWithEmail: "test1@test.com",
+        allowSuperUser: true,
+      } as const,
+    },
+  ])("apply (successful)", ({ tokenName, jwtFilterRules }) => {
     const token = testDataTokens[tokenName];
     const jwtVerifier = new JwtVerifier({ publicKey: developmentPubKey });
 
@@ -27,6 +53,7 @@ describe(JwtFilter.name, () => {
         {
           headers: { authorization: `bearer ${token}` },
         } as unknown as APIGatewayProxyEvent,
+        jwtFilterRules,
         async () => {
           return {
             statusCode: 200,
@@ -37,6 +64,52 @@ describe(JwtFilter.name, () => {
       expect(result).toEqual({
         statusCode: 200,
         body: "body",
+      });
+    });
+  });
+
+  describe.each([
+    {
+      tokenName: "token_Expire2033_05_18",
+      jwtFilterRules: { allowSuperUser: true } as const,
+    },
+    {
+      tokenName: "token_Superuser_Expire2033_05_18",
+      jwtFilterRules: { allowUserWithEmail: "otro@test.com" } as const,
+    },
+    {
+      tokenName: "token_SuperuserFalse_Expire2033_05_18",
+      jwtFilterRules: { allowSuperUser: true } as const,
+    },
+    {
+      tokenName: "token_Account_123_test1AtTestDotCom_Expire2033_05_18",
+      jwtFilterRules: { allowSuperUser: true } as const,
+    },
+    {
+      tokenName: "token_Account_123_test1AtTestDotCom_Expire2033_05_18",
+      jwtFilterRules: { allowUserWithEmail: "otro@test.com" } as const,
+    },
+  ])("apply (fail permissions)", ({ tokenName, jwtFilterRules }) => {
+    const token = testDataTokens[tokenName];
+    const jwtVerifier = new JwtVerifier({ publicKey: developmentPubKey });
+
+    it(`Apply fail for ${tokenName}`, async () => {
+      const sut = new JwtFilter({ jwtVerifier });
+      const result = await sut.apply(
+        {
+          headers: { authorization: `bearer ${token}` },
+        } as unknown as APIGatewayProxyEvent,
+        jwtFilterRules,
+        async () => {
+          return {
+            statusCode: 200,
+            body: "body",
+          };
+        }
+      );
+      expect(result).toEqual({
+        statusCode: 403,
+        body: `{"message":"Not authorized"}`,
       });
     });
   });
@@ -77,6 +150,7 @@ describe(JwtFilter.name, () => {
         {
           headers: { authorization: `bearer ${token}` },
         } as unknown as APIGatewayProxyEvent,
+        { allowAllSignedTokens: true },
         async () => {
           return {
             statusCode: 200,
@@ -119,6 +193,7 @@ describe(JwtFilter.name, () => {
         const sut = new JwtFilter({ jwtVerifier });
         const result = await sut.apply(
           { headers } as unknown as APIGatewayProxyEvent,
+          { allowAllSignedTokens: true },
           async () => {
             return {
               statusCode: 200,

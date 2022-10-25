@@ -6,19 +6,23 @@ export const customerVisit: APIGatewayProxyHandler = async (event, context) => {
   const customerService = getCustomerService();
   const jwtFilter = getJwtFilter();
 
-  return jwtFilter.apply(event, async () => {
-    await customerService.registerVisit(
-      event.pathParameters["email"],
-      new Date()
-    );
+  return jwtFilter.apply(
+    event,
+    { allowSuperUser: true, allowUserWithEmail: event.pathParameters["email"] },
+    async () => {
+      await customerService.registerVisit(
+        event.pathParameters["email"],
+        new Date()
+      );
 
-    return {
-      statusCode: 201,
-      body: JSON.stringify({
-        message: "Go Serverless v2.0! Your function executed successfully!",
-        context,
-        event,
-      }),
-    };
-  });
+      return {
+        statusCode: 201,
+        body: JSON.stringify({
+          message: "Go Serverless v2.0! Your function executed successfully!",
+          context,
+          event,
+        }),
+      };
+    }
+  );
 };

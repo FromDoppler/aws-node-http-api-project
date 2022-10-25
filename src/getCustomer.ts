@@ -6,23 +6,27 @@ export const getCustomer: APIGatewayProxyHandler = async (event, context) => {
   const customerService = getCustomerService();
   const jwtFilter = getJwtFilter();
 
-  return jwtFilter.apply(event, async () => {
-    const result = await customerService.get(event.pathParameters["email"]);
+  return jwtFilter.apply(
+    event,
+    { allowSuperUser: true, allowUserWithEmail: event.pathParameters["email"] },
+    async () => {
+      const result = await customerService.get(event.pathParameters["email"]);
 
-    if (!result) {
+      if (!result) {
+        return {
+          statusCode: 404,
+          body: JSON.stringify({
+            message: "Go Serverless v2.0! Your function executed successfully!",
+            context,
+            event,
+          }),
+        };
+      }
+
       return {
-        statusCode: 404,
-        body: JSON.stringify({
-          message: "Go Serverless v2.0! Your function executed successfully!",
-          context,
-          event,
-        }),
+        statusCode: 200,
+        body: JSON.stringify(result),
       };
     }
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify(result),
-    };
-  });
+  );
 };

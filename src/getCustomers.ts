@@ -6,7 +6,7 @@ export const getCustomers: APIGatewayProxyHandler = async (event, context) => {
   const customerService = getCustomerService();
   const jwtFilter = getJwtFilter();
 
-  return jwtFilter.apply(event, async () => {
+  return jwtFilter.apply(event, { allowSuperUser: true }, async () => {
     const result = await customerService.getAll();
 
     if (result.length === 0) {
