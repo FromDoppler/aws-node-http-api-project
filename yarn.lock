@@ -9021,10 +9021,10 @@ serverless-bundle@6.0.0:
     webpack-node-externals "^2.5.2"
     webpack-permissions-plugin "^1.0.8"
 
-serverless-domain-manager@6.4.1:
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/serverless-domain-manager/-/serverless-domain-manager-6.4.1.tgz#c8347ff28efc25aeadc64fa48f1ceb69bb7961eb"
-  integrity sha512-eHV2Ev07l6cOtvuFrZPlcVCtX1qrpsfRgdje5jnl/85yUF7OwwlYGrvXidC32lOqwvUlASeTF0Ldl25f0saI1g==
+serverless-domain-manager@6.4.2:
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/serverless-domain-manager/-/serverless-domain-manager-6.4.2.tgz#01534a926f367b4cceb7438af17967986b1fe498"
+  integrity sha512-svBqJ4p2C/5Fxe+40CDkfZbZqSY7iK7kABtJUD31MCIsK0yOO0LDGDTtQ4Hs/vdVsAl3rGOVw7tG0PdE/Zz+Sg==
   dependencies:
     aws-sdk "^2.1313.0"
 
